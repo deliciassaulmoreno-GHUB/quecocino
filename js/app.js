@@ -47,9 +47,12 @@
   function card(r) {
     const m = match(r), c = CUISINES[r.cuisine];
     let info = '';
-    if (sel.size) info = m.missing.length === 0
-      ? `<p class="match ok">✓ Tienes todo lo necesario</p>`
-      : `<p class="match">Tienes ${m.have} de ${m.need} · falta: ${m.missing.map(i => ING[i.k][0].toLowerCase()).join(', ')}</p>`;
+    if (sel.size) {
+      const used = r.ing.filter(i => sel.has(i.k)).map(i => ING[i.k][0].toLowerCase()).join(', ');
+      info = `<p class="match uses">Usa ${m.have} de los tuyos: ${used}</p>` + (m.missing.length === 0
+        ? `<p class="match ok">✓ Tienes todo lo necesario</p>`
+        : `<p class="match">Falta: ${m.missing.map(i => ING[i.k][0].toLowerCase()).join(', ')}</p>`);
+    }
     return `<article class="card">
       <a href="#/receta/${r.id}" class="thumb">${Art.thumb(r)}</a>
       <button class="fav${favs.has(r.id) ? ' on' : ''}" data-fav="${r.id}" aria-label="Guardar en favoritos" aria-pressed="${favs.has(r.id)}">♥</button>
@@ -69,7 +72,8 @@
       cuisines.map(c => `<button class="chip${f.cuisine === c ? ' on' : ''}" data-cuisine="${c}">${c}</button>`).join('');
     list = list.filter(x => (!f.cuisine || x.r.cuisine === f.cuisine) && (!f.dif || x.r.dif === f.dif) &&
       (!f.maxT || x.r.time <= f.maxT) && (!f.full || x.m.missing.length === 0));
-    if (sel.size) list.sort((a, b) => a.m.missing.length - b.m.missing.length || b.m.have - a.m.have || a.r.time - b.r.time);
+    // Primero las que usan más ingredientes de los seleccionados; a igualdad, las que menos piden de más
+    if (sel.size) list.sort((a, b) => b.m.have - a.m.have || a.m.missing.length - b.m.missing.length || a.r.time - b.r.time);
     $('#f-full-wrap').hidden = !sel.size;
     $('#results-title').textContent = sel.size
       ? `${list.length} receta${list.length === 1 ? '' : 's'} con tus ingredientes`

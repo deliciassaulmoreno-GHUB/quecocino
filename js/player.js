@@ -1,66 +1,46 @@
 // Ilustraciones de platos + reproductor animado paso a paso (voz, subtítulos, progreso)
 (() => {
-  const emo = k => (ING[k] || STAPLES[k] || [0, k])[1];
-  const T = (x, y, size, ch, cls = '', delay = 0) =>
-    `<text x="${x}" y="${y}" font-size="${size}" text-anchor="middle" class="${cls}" style="animation-delay:${delay}s">${ch}</text>`;
+  /* ---------- Imágenes: foto real del plato y escenas anime por tipo de paso ---------- */
+  const dishSrc = r => `img/dish/${r.id}.jpg`;
+  const thumb = r => `<img src="${dishSrc(r)}" alt="${r.name}" loading="lazy" width="388" height="286">`;
 
-  /* ---------- Plato terminado (vista cenital, lienzo 200x150) ---------- */
-  const SPOTS = [[100, 88], [74, 76], [126, 76], [84, 104], [116, 104], [100, 64]];
-  function dishInner(r) {
-    const { v, col, top } = r.art;
-    let base;
-    if (v === 'bowl') base = `<circle cx="100" cy="78" r="62" fill="#3d5a80"/><circle cx="100" cy="78" r="55" fill="#5578a3"/><circle cx="100" cy="78" r="49" fill="${col}"/>`;
-    else if (v === 'pan') base = `<rect x="150" y="72" width="50" height="12" rx="6" fill="#222"/><circle cx="100" cy="78" r="62" fill="#2b2b2b"/><circle cx="100" cy="78" r="53" fill="${col}"/>`;
-    else base = `<circle cx="100" cy="78" r="64" fill="#fff" stroke="#e3dccf" stroke-width="3"/><circle cx="100" cy="78" r="48" fill="#f4efe6"/><ellipse cx="100" cy="78" rx="42" ry="38" fill="${col}"/>`;
-    const tops = top.map((e, i) => T(SPOTS[i % 6][0], SPOTS[i % 6][1], top.length > 3 ? 24 : 28, e)).join('');
-    return base + tops;
+  const MEAT = ['pollo', 'ternera', 'bacon', 'pescado', 'gambas'];
+  const has = (s, ...ks) => ks.some(k => s.items.includes(k));
+  // Elige la escena anime que mejor encaja con la acción y los ingredientes del paso
+  function pick(s) {
+    if (s.sc) return s.sc;
+    const it = s.items;
+    switch (s.a) {
+      case 'cortar': return MEAT.includes(it[0]) ? 'cortar-carne' : 'cortar';
+      case 'mezclar': return has(s, 'limon') ? 'exprimir' : has(s, 'queso') ? 'espolvorear' : 'mezclar';
+      case 'hervir': return has(s, 'pasta', 'fideos') ? 'pasta' : has(s, 'arroz') ? 'arroz'
+        : has(s, 'tomate', 'garbanzos', 'pollo', 'coco', 'lentejas', 'caldo') ? 'guiso' : 'hervir';
+      case 'freir': return (['tortillas', 'harina', 'pan'].includes(it[0]) || it.join() === 'mantequilla') ? 'plancha'
+        : has(s, 'huevo') ? 'huevos' : it[0] === 'patata' ? 'freir' : has(s, ...MEAT) ? 'sellar'
+        : has(s, 'arroz', 'fideos') ? 'wok' : 'saltear';
+      default: return s.a; // hornear, reposar, triturar
+    }
   }
-  function thumb(r) {
-    const c = CUISINES[r.cuisine] || '#999';
-    return `<svg viewBox="0 0 200 150" role="img" aria-label="${r.name}"><rect width="200" height="150" fill="#fff7ea"/><rect width="200" height="150" fill="${c}" opacity=".2"/><circle cx="100" cy="82" r="66" fill="#000" opacity=".08"/>${dishInner(r)}</svg>`;
-  }
-
-  /* ---------- Escenas ---------- */
-  const BG = `<rect width="640" height="360" fill="#fff1dc"/><rect width="640" height="130" fill="#ffe6c4"/><rect y="270" width="640" height="90" fill="#c98b5a"/><rect y="270" width="640" height="8" fill="#a86f43"/>`;
-  const STOVE = `<rect x="190" y="262" width="260" height="14" rx="4" fill="#3a3a3a"/>` +
-    [240, 290, 340, 390].map((x, i) => T(x, 264, 30, '🔥', 'a-flame', i * .15)).join('');
-  const steam = (cx, y) => [-40, 0, 40].map((dx, i) =>
-    `<path d="M${cx + dx} ${y} q-12 -18 0 -34 q12 -16 0 -34" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" class="a-steam" style="animation-delay:${i * .5}s"/>`).join('');
-  const row = (items, cx, y, size, cls, gap) => items.map((e, i) =>
-    T(cx + (i - (items.length - 1) / 2) * gap, y, size, e, cls, i * .3)).join('');
-
-  const SCENES = {
-    intro: (it, r) => `<rect width="640" height="360" fill="#fff1dc"/><circle cx="320" cy="150" r="210" fill="${CUISINES[r.cuisine]}" opacity=".15"/>` +
-      it.map((e, i) => { const n = it.length, per = Math.min(n, 5), rowi = Math.floor(i / per), inRow = Math.min(per, n - rowi * per);
-        return T(320 + ((i % per) - (inRow - 1) / 2) * 96, 150 + rowi * 96, 64, e, 'a-pop', i * .25); }).join('') +
-      `<text x="320" y="62" font-size="30" font-weight="700" text-anchor="middle" fill="#5a3a1a">${r.name}</text>`,
-    cortar: it => BG + `<rect x="130" y="238" width="380" height="46" rx="12" fill="#e0a96d" stroke="#b47a3f" stroke-width="4"/>` +
-      row(it.slice(0, 4), 290, 236, 66, 'a-bob', 82) + T(500, 200, 96, '🔪', 'a-chop'),
-    mezclar: (it, r) => BG + row(it.slice(0, 4), 320, 150, 54, 'a-drop', 62) +
-      `<path d="M180 180 Q200 300 320 300 Q440 300 460 180 Z" fill="#6aa5cc"/><ellipse cx="320" cy="180" rx="140" ry="24" fill="#4f8db8"/><ellipse cx="320" cy="183" rx="122" ry="16" fill="${r.art.col}"/>` +
-      T(330, 175, 96, '🥄', 'a-stir'),
-    hervir: it => BG + STOVE + steam(320, 130) +
-      `<rect x="180" y="170" width="38" height="14" rx="7" fill="#6b7280"/><rect x="422" y="170" width="38" height="14" rx="7" fill="#6b7280"/><rect x="210" y="150" width="220" height="112" rx="14" fill="#9aa5b1"/><ellipse cx="320" cy="152" rx="110" ry="18" fill="#7b8794"/><ellipse cx="320" cy="154" rx="98" ry="13" fill="#bfe3f5"/>` +
-      [260, 300, 345, 385].map((x, i) => `<circle cx="${x}" cy="156" r="${6 + i % 2 * 3}" fill="#fff" opacity=".9" class="a-bubble" style="animation-delay:${i * .35}s"/>`).join('') +
-      row(it.slice(0, 3), 320, 160, 50, 'a-bob', 64),
-    freir: it => BG + STOVE + steam(310, 170) +
-      `<rect x="430" y="228" width="170" height="16" rx="8" fill="#1f1f1f"/><ellipse cx="310" cy="240" rx="146" ry="28" fill="#2b2b2b"/><ellipse cx="310" cy="234" rx="128" ry="19" fill="#555"/>` +
-      row(it.slice(0, 4), 310, 244, 52, 'a-jiggle', 60),
-    hornear: it => BG + `<rect x="160" y="60" width="320" height="218" rx="16" fill="#6c757d"/><rect x="160" y="60" width="320" height="40" rx="16" fill="#495057"/>` +
-      [200, 240, 440].map(x => `<circle cx="${x}" cy="80" r="9" fill="#dee2e6"/>`).join('') +
-      `<rect x="190" y="116" width="260" height="140" rx="10" fill="#ff9f1c" class="a-glow"/><rect x="190" y="226" width="260" height="5" fill="#333"/>` +
-      row(it.slice(0, 3), 320, 222, 56, 'a-bob', 70) + `<rect x="240" y="104" width="160" height="8" rx="4" fill="#dee2e6"/>`,
-    reposar: (it, r) => BG + `<circle cx="470" cy="130" r="66" fill="#fff" stroke="#5a3a1a" stroke-width="8"/><line x1="470" y1="130" x2="470" y2="84" stroke="#e63946" stroke-width="6" stroke-linecap="round" class="a-spin" style="transform-box:view-box;transform-origin:470px 130px"/><line x1="470" y1="130" x2="498" y2="130" stroke="#5a3a1a" stroke-width="6" stroke-linecap="round"/><circle cx="470" cy="130" r="6" fill="#5a3a1a"/>` +
-      `<path d="M110 200 Q125 290 220 290 Q315 290 330 200 Z" fill="#6aa5cc"/><ellipse cx="220" cy="200" rx="110" ry="20" fill="#4f8db8"/><ellipse cx="220" cy="202" rx="96" ry="13" fill="${r.art.col}"/>` +
-      row(it.slice(0, 2), 220, 206, 44, 'a-bob', 56) + T(300, 120, 44, '💤', 'a-float'),
-    triturar: (it, r) => BG + row(it.slice(0, 3), 320, 70, 44, 'a-drop', 50) +
-      `<g class="a-shake"><rect x="262" y="232" width="116" height="44" rx="8" fill="#343a40"/><circle cx="320" cy="254" r="9" fill="#e63946"/><path d="M250 76 L390 76 L368 232 L272 232 Z" fill="#e3f4ff" stroke="#8fb3cc" stroke-width="5"/><path d="M261 150 L379 150 L368 232 L272 232 Z" fill="${r.art.col}" class="a-glow"/>` +
-      [290, 320, 350].map((x, i) => `<circle cx="${x}" cy="215" r="7" fill="#fff" opacity=".8" class="a-bubble" style="animation-delay:${i * .3}s"/>`).join('') + `</g>`,
-    emplatar: (it, r) => `<rect width="640" height="360" fill="#f3d9b1"/><rect width="640" height="360" fill="${CUISINES[r.cuisine]}" opacity=".18"/>` +
-      `<g class="a-pop"><g transform="translate(120,12) scale(2.05)">${dishInner(r)}</g></g>` + steam(320, 90) +
-      T(110, 90, 48, '✨', 'a-flame') + T(540, 110, 40, '✨', 'a-flame', .4) + T(520, 300, 46, '✨', 'a-flame', .8) + T(100, 290, 60, '🍴')
+  const FX = {
+    cortar: 'lines shake', 'cortar-carne': 'lines shake', mezclar: 'lines', triturar: 'lines shake', wok: 'lines spark steam',
+    hervir: 'steam', pasta: 'steam', arroz: 'steam', guiso: 'steam', plancha: 'steam', saltear: 'steam spark', huevos: 'steam spark',
+    freir: 'steam spark', sellar: 'steam spark', hornear: 'glow', reposar: '', exprimir: 'spark', espolvorear: 'spark', dish: 'spark steam'
   };
-  const LABEL = { intro: 'Ingredientes', cortar: 'Cortar', mezclar: 'Mezclar', hervir: 'Cocer', freir: 'Sartén', hornear: 'Horno', reposar: 'Reposar', triturar: 'Triturar', emplatar: 'Emplatar' };
+  function sceneHTML(s, r, n) {
+    const real = s.a === 'intro' || s.a === 'emplatar';
+    const key = real ? 'dish' : pick(s), fx = FX[key] || '';
+    const chips = real ? '' : s.items.slice(0, 4).map(k => { const d = ING[k] || STAPLES[k]; return `<li>${d[1]} ${d[0]}</li>`; }).join('');
+    return `<div class="cam${fx.includes('shake') ? ' shake' : ''}"><img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : `img/anime/${key}.jpg`}" alt=""></div>` +
+      (fx.includes('glow') ? '<div class="fx glow"></div>' : '') +
+      (fx.includes('lines') ? '<div class="fx lines"></div>' : '') +
+      (fx.includes('steam') ? '<div class="fx steam"><i></i><i></i><i></i></div>' : '') +
+      (fx.includes('spark') ? '<div class="fx spark"><i>✦</i><i>✦</i><i>✧</i><i>✦</i><i>✧</i></div>' : '') +
+      '<div class="vignette"></div>' +
+      (chips ? `<ul class="step-items">${chips}</ul>` : '') +
+      (s.a === 'intro' ? `<div class="title-card"><small>Cocina ${r.cuisine.toLowerCase()} · ${r.time} min</small><strong>${r.name}</strong></div>` : '') +
+      (s.a === 'emplatar' ? `<div class="title-card end"><strong>¡Buen provecho!</strong></div>` : '');
+  }
+  const LABEL = { intro: 'Presentación', cortar: 'Cortar', mezclar: 'Mezclar', hervir: 'Cocer', freir: 'Sartén', hornear: 'Horno', reposar: 'Reposar', triturar: 'Triturar', emplatar: 'Emplatar' };
 
   function chunks(text) {
     const out = [];
@@ -94,7 +74,7 @@
     root.className = 'player paused';
     root.innerHTML = `
       <div class="stage">
-        <svg class="scene" viewBox="0 0 640 360" aria-hidden="true"></svg>
+        <div class="scene" aria-hidden="true"></div>
         <div class="step-badge"></div>
         <div class="subs" aria-live="off"></div>
         <button class="bigplay" aria-label="Reproducir">▶</button>
@@ -136,7 +116,7 @@
     }
     function show() {
       const s = tl[si];
-      scene.innerHTML = SCENES[s.a](s.items.map(emo), r);
+      scene.innerHTML = sceneHTML(s, r, si);
       badge.textContent = `${s.title} · ${s.label}`;
       q('.count').textContent = `${si + 1} / ${tl.length}`;
       sub(); onStep && onStep(si);

@@ -37,7 +37,7 @@ function R(id, name, cuisine, dif, time, serv, art, ing, steps) {
     id, name, cuisine, dif, time, serv,
     art: { v: art[0], col: art[1], top: art[2].split(' ') },
     ing: ing.split('|').map(s => { const [k, q] = s.split(':'); return { k, q: q || '' }; }),
-    steps: steps.map(s => ({ a: s[0], text: s[1], items: s[2] ? s[2].split(' ') : [] }))
+    steps: steps.map(s => ({ a: s[0], text: s[1], items: s[2] ? s[2].split(' ') : [], sc: s[3] }))
   });
 }
 
@@ -158,7 +158,7 @@ R('chowmein', 'Tallarines salteados con verduras', 'China', 1, 20, 2, ['plate', 
   ['hervir', 'Cuece los fideos según indique el paquete, escúrrelos y pásalos por agua fría.', 'fideos'],
   ['cortar', 'Corta la zanahoria y el pimiento en tiras finas y pica el ajo.', 'zanahoria pimiento ajo'],
   ['freir', 'Saltea las verduras a fuego muy fuerte durante 3 minutos, que queden crujientes.', 'zanahoria pimiento ajo'],
-  ['freir', 'Añade los fideos y la salsa de soja y saltea 2 minutos sin dejar de mover.', 'fideos soja'],
+  ['freir', 'Añade los fideos y la salsa de soja y saltea 2 minutos sin dejar de mover.', 'fideos soja', 'wok'],
   ['emplatar', 'Sirve los tallarines humeantes.']
 ]);
 
@@ -234,7 +234,7 @@ R('ratatouille', 'Ratatouille', 'Francesa', 2, 60, 4, ['pan', '#c8553d', '🍆 �
   'berenjena:1|calabacin:1|tomate:4|pimiento:1|cebolla:1|ajo:2 dientes|aceite:4 cucharadas|sal:al gusto', [
   ['cortar', 'Corta la berenjena, el calabacín y dos tomates en rodajas finas.', 'berenjena calabacin tomate'],
   ['freir', 'Sofríe la cebolla, el ajo y el pimiento picados. Añade los otros dos tomates troceados y cocina 10 minutos.', 'cebolla ajo pimiento tomate'],
-  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate'],
+  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate', 'cortar'],
   ['hornear', 'Riega con aceite y sal, cubre con papel de horno y hornea 40 minutos a 180 grados.', 'berenjena calabacin tomate'],
   ['emplatar', 'Sirve la ratatouille caliente o templada.']
 ]);
@@ -242,7 +242,7 @@ R('omelette', 'Omelette francesa con queso', 'Francesa', 1, 10, 1, ['plate', '#f
   'huevo:3|mantequilla:15 g|queso:30 g rallado|sal:una pizca', [
   ['mezclar', 'Bate los huevos con una pizca de sal, solo lo justo para mezclarlos.', 'huevo'],
   ['freir', 'Funde la mantequilla a fuego medio y vierte los huevos. Remueve con una espátula hasta que cuajen por abajo.', 'mantequilla huevo'],
-  ['freir', 'Reparte el queso, dobla la omelette sobre sí misma y cocina medio minuto más.', 'queso'],
+  ['freir', 'Reparte el queso, dobla la omelette sobre sí misma y cocina medio minuto más.', 'queso', 'huevos'],
   ['emplatar', 'Deslízala al plato: debe quedar jugosa por dentro.']
 ]);
 R('crepes', 'Crêpes', 'Francesa', 2, 30, 4, ['plate', '#f1d9a0', '🍯 🧈'],
@@ -278,7 +278,7 @@ R('shakshuka', 'Shakshuka', 'Oriente Medio', 1, 30, 2, ['pan', '#d1432b', '🍳 
 /* ---------- Americana ---------- */
 R('hamburguesa', 'Hamburguesa clásica', 'Americana', 1, 20, 2, ['plate', '#c98a4b', '🍔 🍅 🧀'],
   'ternera:300 g picada|pan:2 de hamburguesa|queso:2 lonchas|tomate:1|cebolla:media|sal:al gusto|pimienta:al gusto', [
-  ['mezclar', 'Forma dos hamburguesas con la carne, sin amasar demasiado, y salpimiéntalas.', 'ternera'],
+  ['mezclar', 'Forma dos hamburguesas con la carne, sin amasar demasiado, y salpimiéntalas.', 'ternera', 'cortar-carne'],
   ['cortar', 'Corta el tomate y la cebolla en rodajas.', 'tomate cebolla'],
   ['freir', 'Cocina las hamburguesas 3 minutos por cada lado a fuego fuerte. Pon el queso encima en el último minuto.', 'ternera queso'],
   ['freir', 'Tuesta ligeramente el pan abierto en la misma sartén.', 'pan'],
@@ -287,8 +287,8 @@ R('hamburguesa', 'Hamburguesa clásica', 'Americana', 1, 20, 2, ['plate', '#c98a
 R('maccheese', 'Macarrones con queso', 'Americana', 1, 30, 3, ['bowl', '#f5b82e', '🧀 🧀'],
   'pasta:300 g de macarrones|queso:200 g rallado|leche:400 ml|mantequilla:30 g|harina:30 g|sal:al gusto', [
   ['hervir', 'Cuece los macarrones en agua con sal y escúrrelos.', 'pasta'],
-  ['freir', 'Funde la mantequilla, añade la harina y cocina 1 minuto sin dejar de remover.', 'mantequilla harina'],
-  ['hervir', 'Vierte la leche poco a poco, removiendo, hasta obtener una bechamel ligera.', 'leche'],
+  ['freir', 'Funde la mantequilla, añade la harina y cocina 1 minuto sin dejar de remover.', 'mantequilla harina', 'mezclar'],
+  ['hervir', 'Vierte la leche poco a poco, removiendo, hasta obtener una bechamel ligera.', 'leche', 'mezclar'],
   ['mezclar', 'Funde el queso en la salsa y mézclala con los macarrones.', 'queso pasta'],
   ['emplatar', 'Sirve bien caliente y cremoso.']
 ]);
@@ -313,6 +313,6 @@ R('lomosaltado', 'Lomo saltado', 'Peruana', 2, 35, 2, ['plate', '#b5651d', '🥩
   ['cortar', 'Corta la ternera en tiras, la cebolla y el tomate en gajos gruesos y las patatas en bastones.', 'ternera cebolla tomate patata'],
   ['freir', 'Fríe las patatas en abundante aceite hasta que estén doradas y resérvalas.', 'patata'],
   ['freir', 'Saltea la carne a fuego muy fuerte durante 2 minutos. Añade la cebolla y el tomate y saltea 1 minuto más.', 'ternera cebolla tomate'],
-  ['mezclar', 'Vierte la salsa de soja, mezcla y añade las patatas fritas al final.', 'soja patata'],
+  ['mezclar', 'Vierte la salsa de soja, mezcla y añade las patatas fritas al final.', 'soja patata', 'wok'],
   ['emplatar', 'Sirve al momento, acompañado de arroz blanco si quieres.']
 ]);
