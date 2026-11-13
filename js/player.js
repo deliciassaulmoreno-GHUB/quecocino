@@ -1,7 +1,7 @@
 // Ilustraciones de platos + reproductor animado paso a paso (voz, subtítulos, progreso)
 (() => {
   /* ---------- Imágenes: foto real del plato y escenas anime por tipo de paso ---------- */
-  const dishSrc = r => `img/dish/${r.id}.jpg?v=8`;
+  const dishSrc = r => `img/dish/${r.id}.jpg?v=9`;
   const thumb = r => `<img src="${dishSrc(r)}" alt="${r.name}" loading="lazy" width="388" height="286">`;
 
   const has = (s, ...ks) => ks.some(k => s.items.includes(k));
@@ -57,7 +57,11 @@
     const key = real ? 'dish' : pick(s), fx = fxOf(key);
     const own = !real && window.STEP_IMGS && STEP_IMGS.has(r.id + '-' + n);
     const chips = real ? '' : s.items.slice(0, 4).map(k => { const d = ING[k] || STAPLES[k]; return `<li>${d[1]} ${d[0]}</li>`; }).join('');
-    return `<div class="cam${fx.includes('shake') ? ' shake' : ''}"><img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : own ? `img/steps/${r.id}-${n}.jpg?v=8` : `img/anime/${key}.jpg`}" alt=""></div>` +
+    const anim = !real && window.STEP_FRAMES && STEP_FRAMES.has(r.id + '-' + n);
+    const media = anim
+      ? `<div class="kb kb${n % 2} frames" style="--src:url(img/frames/${r.id}-${n}.jpg?v=9)"><i class="on"></i><i></i><i></i><i></i></div>`
+      : `<img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : own ? `img/steps/${r.id}-${n}.jpg?v=9` : `img/anime/${key}.jpg`}" alt="">`;
+    return `<div class="cam${fx.includes('shake') ? ' shake' : ''}">${media}</div>` +
       (fx.includes('glow') ? '<div class="fx glow"></div>' : '') +
       (fx.includes('lines') ? '<div class="fx lines"></div>' : '') +
       (fx.includes('steam') ? '<div class="fx steam"><i></i><i></i><i></i></div>' : '') +
@@ -192,8 +196,25 @@
     });
     q('[data-act=rate]').addEventListener('change', e => { rate = +e.target.value; if (playing) run(); });
 
+    // Animación por fotogramas: 4 dibujos consecutivos del mismo plano, en bucle
+    let fi = 0, fwait = 0;
+    const HOLD = [750, 750, 750, 1400]; // ms por fotograma; el ultimo se mantiene mas antes de repetir
+    const frameTimer = setInterval(() => {
+      if (!playing) return;
+      const fr = scene.querySelectorAll('.frames i');
+      if (fr.length !== 4) { fi = 0; fwait = 0; return; }
+      if (!fr[fi].classList.contains('on')) { fi = 0; fwait = 0; } // escena nueva: empieza por el primero
+      fwait += 125 * rate;
+      if (fwait < HOLD[fi]) return;
+      fwait = 0;
+      fr.forEach(x => { x.className = ''; });
+      fr[fi].className = 'under';
+      fi = (fi + 1) % 4;
+      fr[fi].className = 'on';
+    }, 125);
+
     show(); ui();
-    return { timeline: tl, seek, play, pause, destroy: stop, hasVoice: () => !!synth };
+    return { timeline: tl, seek, play, pause, destroy: () => { clearInterval(frameTimer); stop(); }, hasVoice: () => !!synth };
   }
 
   window.Art = { thumb };
