@@ -1,7 +1,7 @@
 // Ilustraciones de platos + reproductor animado paso a paso (voz, subtítulos, progreso)
 (() => {
   /* ---------- Imágenes: foto real del plato y escenas anime por tipo de paso ---------- */
-  const dishSrc = r => `img/dish/${r.id}.jpg?v=5`;
+  const dishSrc = r => `img/dish/${r.id}.jpg?v=6`;
   const thumb = r => `<img src="${dishSrc(r)}" alt="${r.name}" loading="lazy" width="388" height="286">`;
 
   const has = (s, ...ks) => ks.some(k => s.items.includes(k));
