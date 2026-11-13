@@ -19,18 +19,21 @@
       case 'mezclar': return has(s, 'harina') ? 'mezclar' : has(s, 'aguacate') ? 'aplastar' : has(s, 'pasta') ? 'mezclar-pasta'
         : has(s, 'soja') ? 'salsa-soja' : has(s, 'limon') ? 'exprimir' : has(s, 'yogur') ? 'marinar'
         : has(s, 'pepino', 'aceitunas') ? 'ensalada' : has(s, 'huevo') ? 'batir-huevos' : has(s, 'queso') ? 'espolvorear' : 'mezclar';
-      case 'hervir': return has(s, 'pasta', 'fideos') ? 'pasta' : (has(s, 'caldo') && has(s, 'arroz')) ? 'caldo-arroz'
+      case 'hervir': return f === 'huevo' ? 'cocer-huevos' : f === 'brocoli' ? 'brocoli' : has(s, 'garbanzos', 'lentejas') ? 'legumbres'
+        : has(s, 'pasta', 'fideos') ? 'pasta' : (has(s, 'caldo') && has(s, 'arroz')) ? 'caldo-arroz'
         : has(s, 'coco') ? 'coco' : has(s, 'arroz') ? 'arroz'
         : has(s, 'tomate', 'garbanzos', 'pollo', 'lentejas', 'caldo') ? 'guiso' : 'hervir';
       case 'freir':
         if (f === 'tortillas') return has(s, 'queso') ? 'quesadilla' : 'plancha';
-        if (f === 'harina' || f === 'pan') return 'plancha';
+        if (f === 'pan') return 'tostar-pan';
+        if (f === 'harina') return 'plancha';
         if (it.join() === 'mantequilla') return 'masa';
-        return has(s, 'huevo') ? 'huevos' : f === 'patata' ? 'freir' : has(s, 'gambas') ? 'gambas' : has(s, 'bacon') ? 'bacon'
+        return has(s, 'huevo') ? 'huevos' : has(s, 'brocoli') ? 'wok-brocoli' : has(s, 'fideos') ? 'wok-fideos' : f === 'patata' ? 'freir' : has(s, 'gambas') ? 'gambas' : has(s, 'bacon') ? 'bacon'
           : has(s, 'pollo') ? 'dorar-pollo' : has(s, 'ternera') ? 'sellar-ternera' : has(s, 'pescado') ? 'sellar'
           : has(s, 'champinones') ? 'setas' : has(s, 'tomate') ? 'salsa-tomate' : has(s, 'arroz', 'fideos') ? 'wok'
           : (f === 'cebolla' || f === 'ajo') ? 'sofrito' : 'saltear';
-      default: return s.a; // hornear, reposar, triturar
+      case 'reposar': return f === 'fideos' ? 'remojar' : f === 'arroz' ? 'reposar-paella' : f === 'tomate' ? 'nevera' : 'reposar';
+      default: return s.a; // hornear, triturar
     }
   }
   const HOT = 'steam spark';
@@ -41,7 +44,14 @@
     gambas: HOT, setas: HOT, 'cuajar-tortilla': HOT, quesadilla: HOT,
     hornear: 'glow', exprimir: 'spark', espolvorear: 'spark', ensalada: 'spark', dish: HOT
   };
-  const fxOf = key => key.startsWith('cortar') ? 'lines shake' : FX[key] || '';
+  const WOK = 'lines spark steam';
+  const FX2 = {
+    escurrir: 'steam', 'cocer-huevos': 'steam', brocoli: 'steam', legumbres: 'steam', caldo: 'steam', risotto: 'steam', bechamel: 'steam',
+    remojar: 'steam', 'reposar-paella': 'steam', hummus: 'lines shake', 'wok-fideos': WOK, 'wok-ternera': WOK, 'wok-gambas': WOK, 'wok-brocoli': WOK,
+    'marinar-pescado': 'spark', nevera: '', 'montar-fuente': '', 'formar-hamburguesa': '', reposar: '', aplastar: '', 'salsa-soja': '', marinar: ''
+  };
+  // Sin entrada propia, una escena se trata como cocción en caliente (vapor y destellos)
+  const fxOf = key => key.startsWith('cortar') ? 'lines shake' : key in FX2 ? FX2[key] : key in FX ? FX[key] : HOT;
   function sceneHTML(s, r, n) {
     const real = s.a === 'intro' || s.a === 'emplatar';
     const key = real ? 'dish' : pick(s), fx = fxOf(key);

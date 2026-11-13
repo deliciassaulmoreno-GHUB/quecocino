@@ -87,7 +87,7 @@ R('pomodoro', 'Pasta al pomodoro', 'Italiana', 1, 25, 2, ['plate', '#e4572e', '�
   'pasta:200 g|tomate:500 g maduros|ajo:2 dientes|albahaca:unas hojas|aceite:3 cucharadas|sal:al gusto', [
   ['cortar', 'Trocea los tomates y lamina los ajos.', 'tomate ajo'],
   ['freir', 'Dora el ajo en aceite, añade el tomate con sal y cocina 15 minutos a fuego medio hasta que espese.', 'ajo tomate'],
-  ['hervir', 'Cuece la pasta en agua con sal hasta que esté al dente y escúrrela.', 'pasta'],
+  ['hervir', 'Cuece la pasta en agua con sal hasta que esté al dente y escúrrela.', 'pasta', 'escurrir'],
   ['mezclar', 'Mezcla la pasta con la salsa y unas hojas de albahaca rotas con las manos.', 'pasta tomate albahaca'],
   ['emplatar', 'Sirve con un hilo de aceite crudo y albahaca fresca.']
 ]);
@@ -96,7 +96,7 @@ R('risotto', 'Risotto de champiñones', 'Italiana', 2, 40, 3, ['plate', '#e8dcc0
   ['cortar', 'Pica la cebolla muy fina y lamina los champiñones.', 'cebolla champinones'],
   ['freir', 'Pocha la cebolla con la mitad de la mantequilla. Añade los champiñones y saltea hasta que pierdan el agua.', 'cebolla champinones mantequilla'],
   ['freir', 'Agrega el arroz y remueve 2 minutos para que se nacare.', 'arroz'],
-  ['hervir', 'Añade el caldo caliente cazo a cazo, removiendo sin parar, durante unos 18 minutos hasta que el arroz esté cremoso.', 'caldo arroz'],
+  ['hervir', 'Añade el caldo caliente cazo a cazo, removiendo sin parar, durante unos 18 minutos hasta que el arroz esté cremoso.', 'caldo arroz', 'risotto'],
   ['mezclar', 'Fuera del fuego, incorpora el resto de la mantequilla y el queso. Remueve con energía y deja reposar 2 minutos.', 'mantequilla queso'],
   ['emplatar', 'Sirve el risotto meloso, recién hecho.']
 ]);
@@ -155,10 +155,10 @@ R('pollobrocoli', 'Pollo salteado con brócoli', 'China', 1, 20, 2, ['plate', '#
 ]);
 R('chowmein', 'Tallarines salteados con verduras', 'China', 1, 20, 2, ['plate', '#d9a05b', '🥕 🫑 🍜'],
   'fideos:200 g|zanahoria:1|pimiento:1|soja:3 cucharadas|ajo:2 dientes|aceite:2 cucharadas', [
-  ['hervir', 'Cuece los fideos según indique el paquete, escúrrelos y pásalos por agua fría.', 'fideos'],
+  ['hervir', 'Cuece los fideos según indique el paquete, escúrrelos y pásalos por agua fría.', 'fideos', 'escurrir'],
   ['cortar', 'Corta la zanahoria y el pimiento en tiras finas y pica el ajo.', 'zanahoria pimiento ajo'],
   ['freir', 'Saltea las verduras a fuego muy fuerte durante 3 minutos, que queden crujientes.', 'zanahoria pimiento ajo'],
-  ['freir', 'Añade los fideos y la salsa de soja y saltea 2 minutos sin dejar de mover.', 'fideos soja', 'wok'],
+  ['freir', 'Añade los fideos y la salsa de soja y saltea 2 minutos sin dejar de mover.', 'fideos soja', 'wok-fideos'],
   ['emplatar', 'Sirve los tallarines humeantes.']
 ]);
 
@@ -168,7 +168,7 @@ R('teriyaki', 'Pollo teriyaki', 'Japonesa', 1, 25, 2, ['bowl', '#f5f0e6', '🍗 
   ['hervir', 'Cuece el arroz en el doble de agua, tapado y a fuego suave, durante 15 minutos.', 'arroz'],
   ['mezclar', 'Mezcla la salsa de soja con la miel y el jengibre rallado para hacer la salsa teriyaki.', 'soja miel jengibre'],
   ['freir', 'Dora el pollo en trozos por todos los lados durante 6 minutos.', 'pollo'],
-  ['freir', 'Vierte la salsa y cocina 3 minutos, hasta que reduzca y el pollo quede brillante.', 'pollo soja'],
+  ['freir', 'Vierte la salsa y cocina 3 minutos, hasta que reduzca y el pollo quede brillante.', 'pollo soja', 'glasear'],
   ['emplatar', 'Sirve el pollo glaseado sobre el arroz blanco.']
 ]);
 R('oyakodon', 'Oyakodon', 'Japonesa', 2, 25, 2, ['bowl', '#f6d77a', '🍗 🥚 🧅'],
@@ -176,13 +176,13 @@ R('oyakodon', 'Oyakodon', 'Japonesa', 2, 25, 2, ['bowl', '#f6d77a', '🍗 🥚 �
   ['hervir', 'Cuece el arroz y mantenlo caliente.', 'arroz'],
   ['cortar', 'Corta el pollo en bocados y la cebolla en juliana fina.', 'pollo cebolla'],
   ['hervir', 'Cuece la cebolla y el pollo 8 minutos en un vaso de agua con la salsa de soja y el azúcar.', 'cebolla pollo soja'],
-  ['freir', 'Vierte los huevos ligeramente batidos por encima, tapa y cuaja solo 1 minuto para que queden jugosos.', 'huevo'],
+  ['freir', 'Vierte los huevos ligeramente batidos por encima, tapa y cuaja solo 1 minuto para que queden jugosos.', 'huevo', 'oyako'],
   ['emplatar', 'Desliza el pollo con huevo sobre un cuenco de arroz caliente.']
 ]);
 R('ramen', 'Ramen casero rápido', 'Japonesa', 2, 30, 2, ['bowl', '#d9a441', '🍜 🥚 🥬 🥚'],
   'fideos:200 g|caldo:1 litro|huevo:2|soja:3 cucharadas|espinacas:2 puñados|ajo:2 dientes|jengibre:1 trozo', [
   ['hervir', 'Cuece los huevos 6 minutos y medio, enfríalos en agua con hielo y pélalos.', 'huevo'],
-  ['hervir', 'Hierve el caldo 10 minutos con el ajo, el jengibre y la salsa de soja.', 'caldo ajo jengibre soja'],
+  ['hervir', 'Hierve el caldo 10 minutos con el ajo, el jengibre y la salsa de soja.', 'caldo ajo jengibre soja', 'caldo'],
   ['hervir', 'Cuece los fideos aparte y añade las espinacas al caldo en el último minuto.', 'fideos espinacas'],
   ['emplatar', 'Reparte los fideos en cuencos, cubre con el caldo y corona con el huevo partido por la mitad.']
 ]);
@@ -208,7 +208,7 @@ R('dal', 'Dal de lentejas', 'India', 1, 35, 4, ['bowl', '#e0a526', '🌿 🌶️
   ['hervir', 'Cuece las lentejas en 1 litro de agua durante 20 minutos, hasta que se deshagan.', 'lentejas'],
   ['cortar', 'Pica la cebolla, el ajo y los tomates.', 'cebolla ajo tomate'],
   ['freir', 'Sofríe la cebolla y el ajo, añade el curry y el tomate, y cocina 8 minutos.', 'cebolla ajo curry tomate'],
-  ['mezclar', 'Vuelca el sofrito sobre las lentejas, sala y remueve hasta que quede cremoso.', 'lentejas', 'guiso'],
+  ['mezclar', 'Vuelca el sofrito sobre las lentejas, sala y remueve hasta que quede cremoso.', 'lentejas', 'legumbres'],
   ['emplatar', 'Sirve el dal bien caliente en cuencos.']
 ]);
 
@@ -216,7 +216,7 @@ R('dal', 'Dal de lentejas', 'India', 1, 35, 4, ['bowl', '#e0a526', '🌿 🌶️
 R('currythai', 'Curry tailandés de pollo y coco', 'Tailandesa', 2, 30, 3, ['bowl', '#e8c25a', '🍗 🫑 🍃'],
   'pollo:400 g|coco:400 ml|curry:2 cucharadas de pasta|pimiento:1 rojo|albahaca:unas hojas|aceite:1 cucharada|sal:al gusto', [
   ['cortar', 'Corta el pollo en tiras y el pimiento en trozos.', 'pollo pimiento'],
-  ['freir', 'Sofríe la pasta de curry 1 minuto. Añade el pollo y séllalo.', 'curry pollo'],
+  ['freir', 'Sofríe la pasta de curry 1 minuto. Añade el pollo y séllalo.', 'curry pollo', 'curry-pasta'],
   ['hervir', 'Vierte la leche de coco, añade el pimiento y cuece 12 minutos a fuego suave.', 'coco pimiento'],
   ['emplatar', 'Termina con hojas de albahaca y sirve con arroz jazmín.']
 ]);
@@ -224,7 +224,7 @@ R('padthai', 'Pad thai de gambas', 'Tailandesa', 2, 30, 2, ['plate', '#d9a35b', 
   'fideos:200 g de arroz|gambas:200 g|huevo:2|soja:3 cucharadas|limon:1|cacahuetes:un puñado|azucar:1 cucharada|aceite:2 cucharadas', [
   ['reposar', 'Hidrata los fideos en agua caliente durante 10 minutos y escúrrelos.', 'fideos'],
   ['mezclar', 'Mezcla la salsa de soja con el azúcar y el zumo de medio limón.', 'soja limon'],
-  ['freir', 'Saltea las gambas 1 minuto, apártalas a un lado y cuaja los huevos revueltos.', 'gambas huevo'],
+  ['freir', 'Saltea las gambas 1 minuto, apártalas a un lado y cuaja los huevos revueltos.', 'gambas huevo', 'wok-gambas'],
   ['freir', 'Añade los fideos y la salsa y saltea 2 minutos a fuego fuerte.', 'fideos soja'],
   ['emplatar', 'Sirve con cacahuetes picados y un gajo de limón.']
 ]);
@@ -234,7 +234,7 @@ R('ratatouille', 'Ratatouille', 'Francesa', 2, 60, 4, ['pan', '#c8553d', '🍆 �
   'berenjena:1|calabacin:1|tomate:4|pimiento:1|cebolla:1|ajo:2 dientes|aceite:4 cucharadas|sal:al gusto', [
   ['cortar', 'Corta la berenjena, el calabacín y dos tomates en rodajas finas.', 'berenjena calabacin tomate'],
   ['freir', 'Sofríe la cebolla, el ajo y el pimiento picados. Añade los otros dos tomates troceados y cocina 10 minutos.', 'cebolla ajo pimiento tomate'],
-  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate', 'cortar-rodajas'],
+  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate', 'montar-fuente'],
   ['hornear', 'Riega con aceite y sal, cubre con papel de horno y hornea 40 minutos a 180 grados.', 'berenjena calabacin tomate'],
   ['emplatar', 'Sirve la ratatouille caliente o templada.']
 ]);
@@ -242,7 +242,7 @@ R('omelette', 'Omelette francesa con queso', 'Francesa', 1, 10, 1, ['plate', '#f
   'huevo:3|mantequilla:15 g|queso:30 g rallado|sal:una pizca', [
   ['mezclar', 'Bate los huevos con una pizca de sal, solo lo justo para mezclarlos.', 'huevo'],
   ['freir', 'Funde la mantequilla a fuego medio y vierte los huevos. Remueve con una espátula hasta que cuajen por abajo.', 'mantequilla huevo'],
-  ['freir', 'Reparte el queso, dobla la omelette sobre sí misma y cocina medio minuto más.', 'queso', 'huevos'],
+  ['freir', 'Reparte el queso, dobla la omelette sobre sí misma y cocina medio minuto más.', 'queso', 'omelette'],
   ['emplatar', 'Deslízala al plato: debe quedar jugosa por dentro.']
 ]);
 R('crepes', 'Crêpes', 'Francesa', 2, 30, 4, ['plate', '#f1d9a0', '🍯 🧈'],
@@ -264,21 +264,21 @@ R('griega', 'Ensalada griega', 'Griega', 1, 10, 2, ['bowl', '#f3efe2', '🍅 �
 /* ---------- Oriente Medio ---------- */
 R('hummus', 'Hummus', 'Oriente Medio', 1, 10, 4, ['bowl', '#e6cf9c', '🫘 🌿 🍋'],
   'garbanzos:400 g|ajo:1 diente|limon:1|aceite:4 cucharadas|sal:al gusto|agua:3 cucharadas', [
-  ['triturar', 'Tritura los garbanzos escurridos con el ajo, el zumo de limón, el aceite, la sal y el agua hasta obtener una crema lisa.', 'garbanzos ajo limon'],
+  ['triturar', 'Tritura los garbanzos escurridos con el ajo, el zumo de limón, el aceite, la sal y el agua hasta obtener una crema lisa.', 'garbanzos ajo limon', 'hummus'],
   ['emplatar', 'Extiéndelo en un cuenco, haz un surco con la cuchara y riégalo con aceite. Sírvelo con pan.']
 ]);
 R('shakshuka', 'Shakshuka', 'Oriente Medio', 1, 30, 2, ['pan', '#d1432b', '🍳 🍳 🌿 🍳'],
   'huevo:4|tomate:5 maduros|pimiento:1 rojo|cebolla:1|ajo:2 dientes|aceite:3 cucharadas|sal:al gusto', [
   ['cortar', 'Pica la cebolla, el pimiento y el ajo. Trocea los tomates.', 'cebolla pimiento ajo tomate'],
-  ['freir', 'Pocha la cebolla y el pimiento 8 minutos. Añade el ajo y el tomate con sal y cocina 10 minutos más.', 'cebolla pimiento tomate'],
-  ['freir', 'Haz cuatro huecos en la salsa, casca un huevo en cada uno, tapa y cuaja 5 minutos.', 'huevo'],
+  ['freir', 'Pocha la cebolla y el pimiento 8 minutos. Añade el ajo y el tomate con sal y cocina 10 minutos más.', 'cebolla pimiento tomate', 'pimientos'],
+  ['freir', 'Haz cuatro huecos en la salsa, casca un huevo en cada uno, tapa y cuaja 5 minutos.', 'huevo', 'shakshuka'],
   ['emplatar', 'Lleva la sartén a la mesa y sirve con pan para mojar.']
 ]);
 
 /* ---------- Americana ---------- */
 R('hamburguesa', 'Hamburguesa clásica', 'Americana', 1, 20, 2, ['plate', '#c98a4b', '🍔 🍅 🧀'],
   'ternera:300 g picada|pan:2 de hamburguesa|queso:2 lonchas|tomate:1|cebolla:media|sal:al gusto|pimienta:al gusto', [
-  ['mezclar', 'Forma dos hamburguesas con la carne, sin amasar demasiado, y salpimiéntalas.', 'ternera', 'cortar-carne'],
+  ['mezclar', 'Forma dos hamburguesas con la carne, sin amasar demasiado, y salpimiéntalas.', 'ternera', 'formar-hamburguesa'],
   ['cortar', 'Corta el tomate y la cebolla en rodajas.', 'tomate cebolla'],
   ['freir', 'Cocina las hamburguesas 3 minutos por cada lado a fuego fuerte. Pon el queso encima en el último minuto.', 'ternera queso'],
   ['freir', 'Tuesta ligeramente el pan abierto en la misma sartén.', 'pan'],
@@ -286,9 +286,9 @@ R('hamburguesa', 'Hamburguesa clásica', 'Americana', 1, 20, 2, ['plate', '#c98a
 ]);
 R('maccheese', 'Macarrones con queso', 'Americana', 1, 30, 3, ['bowl', '#f5b82e', '🧀 🧀'],
   'pasta:300 g de macarrones|queso:200 g rallado|leche:400 ml|mantequilla:30 g|harina:30 g|sal:al gusto', [
-  ['hervir', 'Cuece los macarrones en agua con sal y escúrrelos.', 'pasta'],
-  ['freir', 'Funde la mantequilla, añade la harina y cocina 1 minuto sin dejar de remover.', 'mantequilla harina', 'mezclar'],
-  ['hervir', 'Vierte la leche poco a poco, removiendo, hasta obtener una bechamel ligera.', 'leche', 'mezclar'],
+  ['hervir', 'Cuece los macarrones en agua con sal y escúrrelos.', 'pasta', 'escurrir'],
+  ['freir', 'Funde la mantequilla, añade la harina y cocina 1 minuto sin dejar de remover.', 'mantequilla harina', 'bechamel'],
+  ['hervir', 'Vierte la leche poco a poco, removiendo, hasta obtener una bechamel ligera.', 'leche', 'bechamel'],
   ['mezclar', 'Funde el queso en la salsa y mézclala con los macarrones.', 'queso pasta'],
   ['emplatar', 'Sirve bien caliente y cremoso.']
 ]);
@@ -296,7 +296,7 @@ R('tortitas', 'Tortitas americanas', 'Americana', 1, 20, 3, ['plate', '#e2b56b',
   'harina:200 g|huevo:1|leche:250 ml|mantequilla:30 g|miel:al gusto|azucar:1 cucharada|sal:una pizca', [
   ['mezclar', 'Mezcla la harina, el azúcar y la sal. Añade el huevo, la leche y la mantequilla fundida y bate lo justo.', 'harina huevo leche'],
   ['freir', 'Vierte pequeños círculos de masa en una sartén engrasada a fuego medio.', 'mantequilla'],
-  ['freir', 'Cuando salgan burbujas en la superficie, dales la vuelta y dóralas 1 minuto más.', 'harina'],
+  ['freir', 'Cuando salgan burbujas en la superficie, dales la vuelta y dóralas 1 minuto más.', 'harina', 'tortitas'],
   ['emplatar', 'Apila las tortitas y báñalas con miel.']
 ]);
 
@@ -305,14 +305,14 @@ R('ceviche', 'Ceviche de pescado', 'Peruana', 2, 20, 2, ['bowl', '#f2ead3', '�
   'pescado:400 g muy fresco, previamente congelado|limon:6 limas|cebolla:1 morada|cilantro:un manojo|guindilla:1|sal:al gusto', [
   ['cortar', 'Corta el pescado en dados de 2 centímetros. Corta la cebolla en juliana muy fina y pica el cilantro y la guindilla.', 'pescado cebolla cilantro guindilla'],
   ['mezclar', 'Sala el pescado y cúbrelo con el zumo de las limas recién exprimidas.', 'pescado limon'],
-  ['reposar', 'Añade la cebolla, la guindilla y el cilantro y deja marinar solo 5 minutos.', 'cebolla cilantro'],
+  ['reposar', 'Añade la cebolla, la guindilla y el cilantro y deja marinar solo 5 minutos.', 'cebolla cilantro', 'marinar-pescado'],
   ['emplatar', 'Sirve de inmediato, muy frío, con su jugo.']
 ]);
 R('lomosaltado', 'Lomo saltado', 'Peruana', 2, 35, 2, ['plate', '#b5651d', '🥩 🍅 🍟 🧅'],
   'ternera:300 g de lomo|cebolla:1 morada|tomate:2|patata:2|soja:3 cucharadas|aceite:abundante|sal:al gusto', [
   ['cortar', 'Corta la ternera en tiras, la cebolla y el tomate en gajos gruesos y las patatas en bastones.', 'ternera cebolla tomate patata'],
-  ['freir', 'Fríe las patatas en abundante aceite hasta que estén doradas y resérvalas.', 'patata'],
-  ['freir', 'Saltea la carne a fuego muy fuerte durante 2 minutos. Añade la cebolla y el tomate y saltea 1 minuto más.', 'ternera cebolla tomate'],
-  ['mezclar', 'Vierte la salsa de soja, mezcla y añade las patatas fritas al final.', 'soja patata', 'wok'],
+  ['freir', 'Fríe las patatas en abundante aceite hasta que estén doradas y resérvalas.', 'patata', 'patatas-fritas'],
+  ['freir', 'Saltea la carne a fuego muy fuerte durante 2 minutos. Añade la cebolla y el tomate y saltea 1 minuto más.', 'ternera cebolla tomate', 'wok-ternera'],
+  ['mezclar', 'Vierte la salsa de soja, mezcla y añade las patatas fritas al final.', 'soja patata', 'wok-ternera'],
   ['emplatar', 'Sirve al momento, acompañado de arroz blanco si quieres.']
 ]);
