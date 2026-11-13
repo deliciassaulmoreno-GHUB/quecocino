@@ -133,7 +133,7 @@ summary { cursor: pointer; font-weight: 600; color: #5c4a3b; padding: 6px 0; }
 
 /* Escenas: imagen con movimiento de cámara y efectos estilo anime */
 .scene { position: absolute; inset: 0; overflow: hidden; background: #1d1612; }
-.scene::after { content: ""; position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; animation: cut .4s ease-out; }
+.flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; animation: cut .35s ease-out; }
 .cam { position: absolute; inset: 0; }
 .cam.shake { animation: shake .16s steps(2) infinite; }
 .kb { width: 100%; height: 100%; object-fit: cover; display: block; animation: kbA 9s ease-in-out infinite alternate; }

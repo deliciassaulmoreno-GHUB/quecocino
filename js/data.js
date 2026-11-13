@@ -47,7 +47,7 @@ R('tortilla', 'Tortilla de patatas', 'Española', 2, 40, 4, ['pan', '#f2c14e', '
   ['cortar', 'Pela las patatas y córtalas en láminas finas. Corta también la cebolla en juliana.', 'patata cebolla'],
   ['freir', 'Fríe las patatas y la cebolla a fuego suave en abundante aceite durante unos 20 minutos, hasta que estén tiernas.', 'patata cebolla'],
   ['mezclar', 'Bate los huevos con una pizca de sal y mézclalos con las patatas bien escurridas. Deja reposar 5 minutos.', 'huevo patata'],
-  ['freir', 'Cuaja la mezcla en una sartén con un poco de aceite, 3 minutos por cada lado. Dale la vuelta con ayuda de un plato.', 'huevo'],
+  ['freir', 'Cuaja la mezcla en una sartén con un poco de aceite, 3 minutos por cada lado. Dale la vuelta con ayuda de un plato.', 'huevo', 'cuajar-tortilla'],
   ['emplatar', 'Deja templar la tortilla un par de minutos y sírvela en porciones.']
 ]);
 R('gazpacho', 'Gazpacho andaluz', 'Española', 1, 15, 4, ['bowl', '#e8553d', '🥒 🫑 🍞'],
@@ -111,7 +111,7 @@ R('guacamole', 'Guacamole', 'Mexicana', 1, 10, 4, ['bowl', '#9bc53d', '🍅 🧅
   'aguacate:3 maduros|tomate:1|cebolla:media|limon:1|cilantro:un manojo|sal:al gusto', [
   ['cortar', 'Pica muy fino el tomate sin semillas, la cebolla y el cilantro.', 'tomate cebolla cilantro'],
   ['mezclar', 'Aplasta los aguacates con un tenedor, dejando algunos trozos. Añade el zumo de limón y la sal.', 'aguacate limon'],
-  ['mezclar', 'Incorpora el tomate, la cebolla y el cilantro y mezcla con suavidad.', 'tomate cebolla cilantro'],
+  ['mezclar', 'Incorpora el tomate, la cebolla y el cilantro y mezcla con suavidad.', 'tomate cebolla cilantro', 'aplastar'],
   ['emplatar', 'Sírvelo al momento con totopos o sobre tostadas.']
 ]);
 R('tacos', 'Tacos de pollo', 'Mexicana', 1, 25, 3, ['plate', '#f0c987', '🫓 🍗 🥑 🌿 🍋'],
@@ -125,7 +125,7 @@ R('quesadillas', 'Quesadillas de queso y pimiento', 'Mexicana', 1, 10, 2, ['plat
   'tortillas:4|queso:200 g rallado|pimiento:1', [
   ['cortar', 'Corta el pimiento en tiras muy finas.', 'pimiento'],
   ['freir', 'Pon una tortilla en la sartén, reparte queso y pimiento sobre una mitad y dóblala.', 'tortillas queso pimiento'],
-  ['freir', 'Dórala 2 minutos por cada lado, hasta que el queso se funda y la tortilla quede crujiente.', 'tortillas'],
+  ['freir', 'Dórala 2 minutos por cada lado, hasta que el queso se funda y la tortilla quede crujiente.', 'tortillas', 'quesadilla'],
   ['emplatar', 'Córtalas en triángulos y sírvelas calientes.']
 ]);
 R('rancheros', 'Huevos rancheros', 'Mexicana', 1, 20, 2, ['plate', '#d9482b', '🍳 🍳 🌶️ 🌿'],
@@ -142,7 +142,7 @@ R('arrozfrito', 'Arroz frito con huevo', 'China', 1, 15, 2, ['bowl', '#e9c46a', 
   ['cortar', 'Corta la zanahoria y la cebolla en dados pequeños.', 'zanahoria cebolla'],
   ['freir', 'Cuaja los huevos batidos en el wok bien caliente, rómpelos en trozos y resérvalos.', 'huevo'],
   ['freir', 'Saltea la zanahoria y la cebolla 3 minutos. Añade el arroz frío y saltea a fuego fuerte otros 3 minutos.', 'zanahoria cebolla arroz'],
-  ['mezclar', 'Incorpora el huevo y la salsa de soja y mezcla bien.', 'huevo soja'],
+  ['mezclar', 'Incorpora el huevo y la salsa de soja y mezcla bien.', 'huevo soja', 'wok'],
   ['emplatar', 'Sirve el arroz frito muy caliente en cuencos.']
 ]);
 R('pollobrocoli', 'Pollo salteado con brócoli', 'China', 1, 20, 2, ['plate', '#c98b4a', '🥦 🍗 🥦 🍗'],
@@ -208,7 +208,7 @@ R('dal', 'Dal de lentejas', 'India', 1, 35, 4, ['bowl', '#e0a526', '🌿 🌶️
   ['hervir', 'Cuece las lentejas en 1 litro de agua durante 20 minutos, hasta que se deshagan.', 'lentejas'],
   ['cortar', 'Pica la cebolla, el ajo y los tomates.', 'cebolla ajo tomate'],
   ['freir', 'Sofríe la cebolla y el ajo, añade el curry y el tomate, y cocina 8 minutos.', 'cebolla ajo curry tomate'],
-  ['mezclar', 'Vuelca el sofrito sobre las lentejas, sala y remueve hasta que quede cremoso.', 'lentejas'],
+  ['mezclar', 'Vuelca el sofrito sobre las lentejas, sala y remueve hasta que quede cremoso.', 'lentejas', 'guiso'],
   ['emplatar', 'Sirve el dal bien caliente en cuencos.']
 ]);
 
@@ -234,7 +234,7 @@ R('ratatouille', 'Ratatouille', 'Francesa', 2, 60, 4, ['pan', '#c8553d', '🍆 �
   'berenjena:1|calabacin:1|tomate:4|pimiento:1|cebolla:1|ajo:2 dientes|aceite:4 cucharadas|sal:al gusto', [
   ['cortar', 'Corta la berenjena, el calabacín y dos tomates en rodajas finas.', 'berenjena calabacin tomate'],
   ['freir', 'Sofríe la cebolla, el ajo y el pimiento picados. Añade los otros dos tomates troceados y cocina 10 minutos.', 'cebolla ajo pimiento tomate'],
-  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate', 'cortar'],
+  ['mezclar', 'Extiende la salsa en una fuente y coloca encima las rodajas de verdura, alternándolas en espiral.', 'berenjena calabacin tomate', 'cortar-rodajas'],
   ['hornear', 'Riega con aceite y sal, cubre con papel de horno y hornea 40 minutos a 180 grados.', 'berenjena calabacin tomate'],
   ['emplatar', 'Sirve la ratatouille caliente o templada.']
 ]);

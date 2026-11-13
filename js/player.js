@@ -4,38 +4,54 @@
   const dishSrc = r => `img/dish/${r.id}.jpg`;
   const thumb = r => `<img src="${dishSrc(r)}" alt="${r.name}" loading="lazy" width="388" height="286">`;
 
-  const MEAT = ['pollo', 'ternera', 'bacon', 'pescado', 'gambas'];
   const has = (s, ...ks) => ks.some(k => s.items.includes(k));
+  const CUT = {
+    pollo: 'carne', ternera: 'carne', bacon: 'carne', pescado: 'pescado', cebolla: 'cebolla', ajo: 'cebolla', tomate: 'tomate',
+    pimiento: 'pimiento', guindilla: 'pimiento', patata: 'patata', cilantro: 'hierbas', perejil: 'hierbas', albahaca: 'hierbas',
+    berenjena: 'rodajas', calabacin: 'rodajas', pepino: 'rodajas', aguacate: 'aguacate', champinones: 'setas'
+  };
   // Elige la escena anime que mejor encaja con la acción y los ingredientes del paso
   function pick(s) {
     if (s.sc) return s.sc;
-    const it = s.items;
+    const it = s.items, f = it[0];
     switch (s.a) {
-      case 'cortar': return MEAT.includes(it[0]) ? 'cortar-carne' : 'cortar';
-      case 'mezclar': return has(s, 'limon') ? 'exprimir' : has(s, 'queso') ? 'espolvorear' : 'mezclar';
-      case 'hervir': return has(s, 'pasta', 'fideos') ? 'pasta' : has(s, 'arroz') ? 'arroz'
-        : has(s, 'tomate', 'garbanzos', 'pollo', 'coco', 'lentejas', 'caldo') ? 'guiso' : 'hervir';
-      case 'freir': return (['tortillas', 'harina', 'pan'].includes(it[0]) || it.join() === 'mantequilla') ? 'plancha'
-        : has(s, 'huevo') ? 'huevos' : it[0] === 'patata' ? 'freir' : has(s, ...MEAT) ? 'sellar'
-        : has(s, 'arroz', 'fideos') ? 'wok' : 'saltear';
+      case 'cortar': return CUT[f] ? 'cortar-' + CUT[f] : 'cortar';
+      case 'mezclar': return has(s, 'harina') ? 'mezclar' : has(s, 'aguacate') ? 'aplastar' : has(s, 'pasta') ? 'mezclar-pasta'
+        : has(s, 'soja') ? 'salsa-soja' : has(s, 'limon') ? 'exprimir' : has(s, 'yogur') ? 'marinar'
+        : has(s, 'pepino', 'aceitunas') ? 'ensalada' : has(s, 'huevo') ? 'batir-huevos' : has(s, 'queso') ? 'espolvorear' : 'mezclar';
+      case 'hervir': return has(s, 'pasta', 'fideos') ? 'pasta' : (has(s, 'caldo') && has(s, 'arroz')) ? 'caldo-arroz'
+        : has(s, 'coco') ? 'coco' : has(s, 'arroz') ? 'arroz'
+        : has(s, 'tomate', 'garbanzos', 'pollo', 'lentejas', 'caldo') ? 'guiso' : 'hervir';
+      case 'freir':
+        if (f === 'tortillas') return has(s, 'queso') ? 'quesadilla' : 'plancha';
+        if (f === 'harina' || f === 'pan') return 'plancha';
+        if (it.join() === 'mantequilla') return 'masa';
+        return has(s, 'huevo') ? 'huevos' : f === 'patata' ? 'freir' : has(s, 'gambas') ? 'gambas' : has(s, 'bacon') ? 'bacon'
+          : has(s, 'pollo') ? 'dorar-pollo' : has(s, 'ternera') ? 'sellar-ternera' : has(s, 'pescado') ? 'sellar'
+          : has(s, 'champinones') ? 'setas' : has(s, 'tomate') ? 'salsa-tomate' : has(s, 'arroz', 'fideos') ? 'wok'
+          : (f === 'cebolla' || f === 'ajo') ? 'sofrito' : 'saltear';
       default: return s.a; // hornear, reposar, triturar
     }
   }
+  const HOT = 'steam spark';
   const FX = {
-    cortar: 'lines shake', 'cortar-carne': 'lines shake', mezclar: 'lines', triturar: 'lines shake', wok: 'lines spark steam',
-    hervir: 'steam', pasta: 'steam', arroz: 'steam', guiso: 'steam', plancha: 'steam', saltear: 'steam spark', huevos: 'steam spark',
-    freir: 'steam spark', sellar: 'steam spark', hornear: 'glow', reposar: '', exprimir: 'spark', espolvorear: 'spark', dish: 'spark steam'
+    mezclar: 'lines', 'batir-huevos': 'lines', triturar: 'lines shake', wok: 'lines spark steam',
+    hervir: 'steam', pasta: 'steam', arroz: 'steam', guiso: 'steam', plancha: 'steam', 'mezclar-pasta': 'steam', 'caldo-arroz': 'steam', coco: 'steam', masa: 'steam',
+    saltear: HOT, huevos: HOT, freir: HOT, sellar: HOT, sofrito: HOT, 'salsa-tomate': HOT, bacon: HOT, 'dorar-pollo': HOT, 'sellar-ternera': HOT,
+    gambas: HOT, setas: HOT, 'cuajar-tortilla': HOT, quesadilla: HOT,
+    hornear: 'glow', exprimir: 'spark', espolvorear: 'spark', ensalada: 'spark', dish: HOT
   };
+  const fxOf = key => key.startsWith('cortar') ? 'lines shake' : FX[key] || '';
   function sceneHTML(s, r, n) {
     const real = s.a === 'intro' || s.a === 'emplatar';
-    const key = real ? 'dish' : pick(s), fx = FX[key] || '';
+    const key = real ? 'dish' : pick(s), fx = fxOf(key);
     const chips = real ? '' : s.items.slice(0, 4).map(k => { const d = ING[k] || STAPLES[k]; return `<li>${d[1]} ${d[0]}</li>`; }).join('');
     return `<div class="cam${fx.includes('shake') ? ' shake' : ''}"><img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : `img/anime/${key}.jpg`}" alt=""></div>` +
       (fx.includes('glow') ? '<div class="fx glow"></div>' : '') +
       (fx.includes('lines') ? '<div class="fx lines"></div>' : '') +
       (fx.includes('steam') ? '<div class="fx steam"><i></i><i></i><i></i></div>' : '') +
       (fx.includes('spark') ? '<div class="fx spark"><i>✦</i><i>✦</i><i>✧</i><i>✦</i><i>✧</i></div>' : '') +
-      '<div class="vignette"></div>' +
+      '<div class="vignette"></div><div class="flash"></div>' +
       (chips ? `<ul class="step-items">${chips}</ul>` : '') +
       (s.a === 'intro' ? `<div class="title-card"><small>Cocina ${r.cuisine.toLowerCase()} · ${r.time} min</small><strong>${r.name}</strong></div>` : '') +
       (s.a === 'emplatar' ? `<div class="title-card end"><strong>¡Buen provecho!</strong></div>` : '');
