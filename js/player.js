@@ -1,7 +1,7 @@
 // Ilustraciones de platos + reproductor animado paso a paso (voz, subtítulos, progreso)
 (() => {
   /* ---------- Imágenes: foto real del plato y escenas anime por tipo de paso ---------- */
-  const dishSrc = r => `img/dish/${r.id}.jpg?v=7`;
+  const dishSrc = r => `img/dish/${r.id}.jpg?v=8`;
   const thumb = r => `<img src="${dishSrc(r)}" alt="${r.name}" loading="lazy" width="388" height="286">`;
 
   const has = (s, ...ks) => ks.some(k => s.items.includes(k));
@@ -55,8 +55,9 @@
   function sceneHTML(s, r, n) {
     const real = s.a === 'intro' || s.a === 'emplatar';
     const key = real ? 'dish' : pick(s), fx = fxOf(key);
+    const own = !real && window.STEP_IMGS && STEP_IMGS.has(r.id + '-' + n);
     const chips = real ? '' : s.items.slice(0, 4).map(k => { const d = ING[k] || STAPLES[k]; return `<li>${d[1]} ${d[0]}</li>`; }).join('');
-    return `<div class="cam${fx.includes('shake') ? ' shake' : ''}"><img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : `img/anime/${key}.jpg`}" alt=""></div>` +
+    return `<div class="cam${fx.includes('shake') ? ' shake' : ''}"><img class="kb kb${n % 2}${real ? ' real' : ''}" src="${real ? dishSrc(r) : own ? `img/steps/${r.id}-${n}.jpg?v=8` : `img/anime/${key}.jpg`}" alt=""></div>` +
       (fx.includes('glow') ? '<div class="fx glow"></div>' : '') +
       (fx.includes('lines') ? '<div class="fx lines"></div>' : '') +
       (fx.includes('steam') ? '<div class="fx steam"><i></i><i></i><i></i></div>' : '') +
