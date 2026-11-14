@@ -1,2 +1,2 @@
 // Pasos con secuencia animada de 4 fotogramas (mosaico 2x2 en img/frames/<receta>-<paso>.jpg)
-window.STEP_FRAMES = new Set(["gazpacho-1","gazpacho-2","gazpacho-3","paella-1","paella-2","paella-3","tortilla-1","tortilla-2","tortilla-3","tortilla-4"]);
+window.STEP_FRAMES = new Set(["caprese-1","carbonara-1","carbonara-2","carbonara-3","carbonara-4","gambas-1","gambas-2","gambas-3","gazpacho-1","gazpacho-2","gazpacho-3","paella-1","paella-2","paella-3","paella-4","paella-5","pomodoro-1","pomodoro-2","pomodoro-3","pomodoro-4","risotto-1","risotto-2","risotto-3","risotto-4","risotto-5","tortilla-1","tortilla-2","tortilla-3","tortilla-4"]);
